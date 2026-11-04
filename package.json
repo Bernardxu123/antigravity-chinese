@@ -1,0 +1,26 @@
+{
+  "name": "antigravity-chinese-patch",
+  "version": "2.29.0",
+  "description": "Google Antigravity 桌面版全功能中文汉化补丁（支持 2.x 全版本，持续跟进 2.29.0 最新版）",
+  "main": "patch.js",
+  "scripts": {
+    "patch": "node patch.js",
+    "patch:hot": "node patch.js --no-kill",
+    "revert": "node patch.js --revert",
+    "test": "node tools/test_translation.js",
+    "check": "node tools/check_main_process.js",
+    "verify": "node tools/verify_ui.js"
+  },
+  "dependencies": {
+    "@electron/asar": "^3.2.10"
+  },
+  "keywords": [
+    "antigravity",
+    "google-antigravity",
+    "localization",
+    "i18n",
+    "chinese",
+    "patch"
+  ],
+  "license": "MIT"
+}

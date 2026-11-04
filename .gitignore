@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+package-lock.json.bak
+
+# Runtime & Temporary Working Directories
+temp/
+tools/out/
+*.tmp
+*.log
+
+# Antigravity Backup Files
+*.bak
+app.asar.bak
+
+# OS & Editor Files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
