@@ -1,8 +1,8 @@
 # Google Antigravity 桌面端中文汉化补丁 (2.x 全版本)
 
-[![Version](https://img.shields.io/badge/Antigravity-v2.29.0-blue.svg)](https://github.com/)
+[![Version](https://img.shields.io/badge/Antigravity-v2.29.0-blue.svg)](https://github.com/Bernardxu123/antigravity-chinese)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](https://github.com/)
+[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](https://github.com/Bernardxu123/antigravity-chinese)
 [![Dictionary](https://img.shields.io/badge/dictionary-2700%2B%20entries-orange.svg)](dictionary.json)
 
 本项目为 Google 官方出品的下一代 AI 编程智能体工具 **Google Antigravity 桌面端** 提供高品质、无损、深度集成的界面中文汉化补丁。
