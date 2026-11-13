@@ -250,7 +250,28 @@ const cases = [
   'Hide earlier steps',
   'Updated 10月8日, 10:39',
   '5m ago',
-  'Close Architecture Overview'
+  'Close Architecture Overview',
+  // ===== 2.31.2 新版特性抽查 =====
+  'Coordinators',
+  'New Coordinator',
+  'Coordinator settings',
+  'Side Question',
+  'Side Questions',
+  'Browser downloads',
+  'Link Settings',
+  'Cookies and site data',
+  'Select Download Folder',
+  'Actual Size',
+  'Chat Layout',
+  'Interface Layout',
+  'Toggle Word Wrap (Alt+Z)',
+  'Find References',
+  'Quote',
+  'Comment',
+  'Good Response',
+  'Bad Response',
+  'Google One Referral',
+  'Gemini Flash Next'
 ];
 
 let hit = 0, miss = 0;

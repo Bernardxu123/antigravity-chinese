@@ -1,19 +1,19 @@
 # Google Antigravity 桌面端中文汉化补丁 (2.x 全版本)
 
-[![Version](https://img.shields.io/badge/Antigravity-v2.29.0-blue.svg)](https://github.com/Bernardxu123/antigravity-chinese)
+[![Version](https://img.shields.io/badge/Antigravity-v2.31.2-blue.svg)](https://github.com/Bernardxu123/antigravity-chinese)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](https://github.com/Bernardxu123/antigravity-chinese)
-[![Dictionary](https://img.shields.io/badge/dictionary-2700%2B%20entries-orange.svg)](dictionary.json)
+[![Dictionary](https://img.shields.io/badge/dictionary-2770%2B%20entries-orange.svg)](dictionary.json)
 
 本项目为 Google 官方出品的下一代 AI 编程智能体工具 **Google Antigravity 桌面端** 提供高品质、无损、深度集成的界面中文汉化补丁。
 
-持续跟进官方发布动态，当前已深度适配 **v2.29.0（2026年11月最新重构版）**，同时向下兼容 2.x 全系版本。
+持续跟进官方发布动态，当前已深度适配 **v2.31.2（2026年11月最新版）**，同时向下兼容 2.x 全系版本。
 
 ---
 
 ## ✨ 核心特性
 
-- 🎯 **深度全量覆盖**：包含应用菜单、系统托盘、自动更新弹窗、WSL 集成、新建/设置/自动化任务向导、侧边栏、连接器（Connectors）、模型与权限预设选择器等全量界面。
+- 🎯 **深度全量覆盖**：包含应用菜单、系统托盘、自动更新弹窗、WSL 集成、新建/设置/自动化任务向导、侧边栏、协调员体系（Coordinators）、旁支提问（Side Questions）、连接器（Connectors）、模型与权限预设选择器等全量界面。
 - 🛡️ **代码与业务无损**：严格隔离代码编辑器（Monaco / CodeMirror / ContentEditable 区域）、终端命令行交互、产物生成及文件正文，**绝不触碰任何代码逻辑与通信协议**。
 - ⚡ **动态文本智能匹配**：内置 24 组高精正则替换规则，精准汉化如“思考时长 3s”、“第 2 / 6 轮对话”、“显示前 1 个步骤”、“5 分钟前”、“加载更早的消息，显示第 5 / 43 条”等动态拼装文本。
 - 🔄 **自动备份与安全还原**：首次应用自动备份官方原始 `app.asar` 到 `app.asar.bak`。后续 Antigravity 自动更新后，脚本会自动检测并刷新备份，随时可通过 `--revert` 一键无缝回退官方原版。
@@ -26,7 +26,8 @@
 
 | Antigravity 版本 | 汉化支持状态 | 词典词条数 | 重点更新内容 |
 | :--- | :---: | :---: | :--- |
-| **v2.29.0**（最新） | 🌟 完美支持 | **2,702+** | 自动化 When/Where/What 交互重构、连接器 (Connectors)、回车发送与聊天宽度、屏幕阅读器模式、下载管理器 |
+| **v2.31.2**（最新） | 🌟 完美支持 | **2,774** | 协调员体系 (Coordinators)、旁支提问 (Side Questions)、浏览器站点下载权限与路径、聊天自动换行与布局、Find References/Quote 等 |
+| **v2.29.0** | ✅ 完美支持 | 2,702 | 自动化 When/Where/What 交互重构、连接器 (Connectors)、回车发送与聊天宽度、屏幕阅读器模式、下载管理器 |
 | **v2.28.2** | ✅ 完美支持 | 2,560 | 云端工作区、CitC 工作区、快捷键管理、实时语音 (Jetski)、模型深度思考耗时、权限预设选择器 |
 | **v2.23.0** | ✅ 完美支持 | 2,230 | 权限微调、WSL 子系统菜单、Best-of-N 分叉、参谋长画布 |
 | **v2.11.x ~ v2.12.x** | ✅ 完美支持 | 1,800+ | 语言服务器本地 UI 架构、自动更新器多态弹窗 |
@@ -97,7 +98,8 @@ antigravity-chinese-patch/
     ├── entries_e_general.json
     ├── entries_f_2230.json    # 2.23.0 补充词条
     ├── entries_g_2282.json    # 2.28.2 补充词条
-    └── entries_h_2290.json    # 2.29.0 补充词条
+    ├── entries_h_2290.json    # 2.29.0 补充词条
+    └── entries_i_2312.json    # 2.31.2 补充词条
 ```
 
 ---
@@ -117,7 +119,7 @@ node tools/fetch_ui_strings.js
 ```bash
 node tools/check_main_process.js
 ```
-*(自动解包当前已安装的 `app.asar`，测试 `patch.js` 中 30 组主进程正则匹配模式是否全部命中。若官方调整了代码写法，根据提示同步微调 `patch.js`)*
+*(自动解包当前已安装的 `app.asar`，测试 `patch.js` 中 32 组主进程正则匹配模式是否全部命中。若官方调整了代码写法，根据提示同步微调 `patch.js`)*
 
 ### 3. 补充新词条并合并
 在 `tools/` 目录下新建对应版本的词条文件（如 `entries_i_2300.json`），完成翻译后执行：

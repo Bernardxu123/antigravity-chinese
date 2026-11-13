@@ -296,6 +296,8 @@ async function patch(options = {}) {
     // WSL 菜单项（2.23.0 新增，经 new MenuItem 直接构建，不走 buildFromTemplate）
     menuContent = menuContent.replace(/label:\s*'Connect to WSL'/g, "label: '连接到 WSL'");
     menuContent = menuContent.replace(/label:\s*'Reopen Locally'/g, "label: '重新在本地打开'");
+    // 缩放菜单项（2.31.2 新增）
+    menuContent = menuContent.replace(/label:\s*item\.label\s*\|\|\s*'Actual Size'/g, "label: item.label || '实际大小'");
     fs.writeFileSync(menuPath, menuContent, 'utf8');
   }
   // C2. 注入 Electron 原生菜单角色中文化（文件/编辑/视图/窗口等 + Reset Zoom/Zoom In/Out）
@@ -324,7 +326,7 @@ try {
     'Bring All to Front': '前置全部窗口',
     'New Window': '新建窗口', 'Docs': '文档', 'Check for Updates': '检查更新',
     'Checking for Updates...': '正在检查更新...', 'Downloading Update...': '正在下载更新...', 'Restart to Update': '重启以完成更新',
-    'Connect to WSL': '连接到 WSL', 'Reopen Locally': '重新在本地打开'
+    'Connect to WSL': '连接到 WSL', 'Reopen Locally': '重新在本地打开', 'Actual Size': '实际大小'
   };
   function _translateMenuItem(item) {
     if (!item) return;
@@ -435,6 +437,8 @@ try {
     // 2.23.0 新增：WSL 路径相关对话框
     ipcContent = ipcContent.replace(/showErrorBox\('Cannot open folder'/g, "showErrorBox('无法打开文件夹'");
     ipcContent = ipcContent.replace(/message:\s*'Folder is on the Windows filesystem'/g, "message: '文件夹位于 Windows 文件系统中'");
+    // 2.31.2 新增：下载目录选择对话框
+    ipcContent = ipcContent.replace(/title:\s*'Select Download Folder'/g, "title: '选择下载文件夹'");
     fs.writeFileSync(ipcPath, ipcContent, 'utf8');
   }
 

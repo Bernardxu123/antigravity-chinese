@@ -4,6 +4,36 @@
 
 ---
 
+## [v2.31.2] - 2026-11-13
+
+### 🌟 新特性与多智能体系统适配
+- **多智能体协调员体系 (Coordinators)**：
+  - 全面汉化多智能体协调管理模块（`Coordinators`、`New Coordinator`、`Coordinator settings`、`No coordinators`）；
+  - 汉化协调员目标设定引导（`What should this coordinator accomplish?` 等）。
+- **旁支提问系统 (Side Questions)**：
+  - 汉化会话内分支问答机制（`Side Question`、`Side Questions`、`New Side Question`、`Delete Side Question`）；
+  - 汉化分支删除与确认、失败提示（`Failed to delete side question` 等）。
+- **浏览器下载与安全控制 (Browser Downloads & Link Settings)**：
+  - 汉化浏览器子智能体文件下载权限策略（`Browser downloads`、`Allow/deny agent browser file downloads from specific sites` 等）；
+  - 汉化链接安全与 Cookie 管理提示（`Link Settings`、`Cookies and site data`、`Connection is secure` 等）；
+  - 主进程对话框汉化：`Select Download Folder` $\rightarrow$ `选择下载文件夹`。
+- **聊天布局与编辑器设置 (Chat Layout & Editor Settings)**：
+  - 汉化界面与聊天布局配置（`Chat Layout`、`Interface Layout` 等）；
+  - 汉化代码/聊天自动换行切换提示（`Toggle Word Wrap (Alt+Z)`）。
+- **右键上下文菜单与操作反馈 (Context Actions & Feedback)**：
+  - 汉化代码引用与跳转（`Find References`、`Quote`、`Comment`）；
+  - 汉化模型回复评价（`Good Response`、`Bad Response`）；
+  - 汉化推荐计划引导（`Google One Referral`）与实验模型标识（`Gemini Flash Next`）。
+- **主进程与原生菜单**：
+  - `menu.js` 新增原生菜单项 `Actual Size` $\rightarrow$ `实际大小`；
+  - `ipcHandlers.js` 新增 `Select Download Folder` 对话框标题汉化；
+  - 32 组主进程匹配模式全部 100% 验证通过。
+- **词典扩充与优化**：
+  - 新增词条源文件 `entries_i_2312.json`（共 72 个新词条）；
+  - 词典词条总数扩充至 **2,774 条**。
+
+---
+
 ## [v2.29.0] - 2026-11-04
 
 ### 🌟 界面重构与新特性适配
