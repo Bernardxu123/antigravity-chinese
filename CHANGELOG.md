@@ -6,7 +6,34 @@
 
 ## [v2.31.2] - 2026-11-13
 
-### 🌟 新特性与多智能体系统适配
+### 🔧 细节增强与设置页全景汉化（2026-11-14 深度适配）
+- **界面布局模式卡片 (Interface Layout)**：
+  - 汉化 `Knowledge Work` $\rightarrow$ `知识工作` 与 `Simplified interface for research, writing, and everyday tasks.` $\rightarrow$ `适用于研究、写作和日常任务的简化界面。`；
+  - 汉化 `Software Engineering` $\rightarrow$ `软件工程` 与 `Full interface for coding, developer tools, and managing agents.` $\rightarrow$ `适用于编码、开发工具和智能体管理的完整界面。`。
+- **语音设置与音色预览 (Voice Mode & Settings)**：
+  - 汉化语音模式配置说明、音色未设置提示（`Not set` $\rightarrow$ `未设置`）；
+  - 汉化音色选择器对话框全流程（`Choose Antigravity's Voice`、`Clear and friendly` 等音质音色属性、`Use <Voice>` 动态按钮等）；
+  - 汉化录音管理与一键删除对话框。
+- **浏览器服务完整交互 (Browser Services)**：
+  - 汉化内置浏览器（`Built-in Browser`）与外部浏览器（`External Browser`）切换；
+  - 汉化下载保存目录说明与更改路径按钮（`Change...` / `Change…`）；
+  - 汉化浏览历史清理与浏览器子智能体操作规则详细配置文案。
+- **会话管理与自定义配置细分 (Customizations Breakdown)**：
+  - 汉化项目外部独立会话配置说明、Token 预算策略警告说明；
+  - 汉化 `Mcp Tools` 规范名称；
+  - 增强使用细分动态正则，全面支持单复数匹配（如 `Show 1 breakdown` $\rightarrow$ `查看 1 项使用细分`）。
+- **模型与用量及限额倒计时 (Models & Usage)**：
+  - 汉化 `Models & Usage` 主标题及刷新状态；
+  - 动态正则增强适配用户计划名称（`Your Plan: Google AI Pro` $\rightarrow$ `您的计划：Google AI Pro`）；
+  - 汉化 AI 积分超额使用机制说明；
+  - 汉化 `Gemini Models`、`Claude and GPT models` 类别标题；
+  - 汉化配额周期（`Weekly Limit Remaining` $\rightarrow$ `每周剩余配额`、`Five Hour Limit Remaining` $\rightarrow$ `5 小时剩余配额`）；
+  - 新增配额重置动态倒计时正则（如 `Resets in 3d 4h` $\rightarrow$ `将在 3 天 4 小时 后重置`、`Resets in <1m` $\rightarrow$ `将在 1 分钟内重置`）。
+- **词典扩充**：
+  - 新增词条源文件 `entries_j_2312_settings.json`（新增 45 个词条）；
+  - 词典词条总数扩充至 **2,819 条**。
+
+### 🌟 新特性与多智能体系统适配（2026-11-13 初版）
 - **多智能体协调员体系 (Coordinators)**：
   - 全面汉化多智能体协调管理模块（`Coordinators`、`New Coordinator`、`Coordinator settings`、`No coordinators`）；
   - 汉化协调员目标设定引导（`What should this coordinator accomplish?` 等）。

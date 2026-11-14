@@ -31,7 +31,7 @@ function translateText(text) {
 
   const budgetMatch = normalizedText.match(/^([\d.]+)%\s+of\s+the\s+customization\s+budget\s+is\s+available\.$/i);
   if (budgetMatch) return `可用自定义额度为 ${budgetMatch[1]}%。`;
-  const breakdownsMatch = normalizedText.match(/^Show\s+(\d+)\s+breakdowns$/i);
+  const breakdownsMatch = normalizedText.match(/^Show\s+(\d+)\s+breakdowns?$/i);
   if (breakdownsMatch) return `查看 ${breakdownsMatch[1]} 项使用细分`;
   const skillsMatch = normalizedText.match(/^Skills\s*\((\d+)\)$/i);
   if (skillsMatch) return `已启用智能体技能 (${skillsMatch[1]})`;
@@ -78,6 +78,40 @@ function translateText(text) {
   if (closeTabMatch && closeTabMatch[1].length > 3) {
     return `关闭 ${closeTabMatch[1]}`;
   }
+
+  // 25. Dynamic Regex translation for "Your Plan: ..."
+  const yourPlanMatch = normalizedText.match(/^Your\s+Plan:\s*(.+)$/i);
+  if (yourPlanMatch) {
+    return `您的计划：${yourPlanMatch[1]}`;
+  }
+
+  // 26. Dynamic Regex translation for "Resets in ..."
+  const resetsInMatch = normalizedText.match(/^Resets\s+in\s+(.+)$/i);
+  if (resetsInMatch) {
+    let t = resetsInMatch[1].trim();
+    if (t === '<1m') return '将在 1 分钟内重置';
+    t = t.replace(/\s+/g, ' ')
+         .replace(/(\d+)\s*d/g, '$1 天 ')
+         .replace(/(\d+)\s*h/g, '$1 小时 ')
+         .replace(/(\d+)\s*m/g, '$1 分钟')
+         .replace(/\s+/g, ' ')
+         .trim();
+    return `将在 ${t} 后重置`;
+  }
+
+  // 27. Dynamic Regex translation for "Use <Voice>"
+  const useVoiceMatch = normalizedText.match(/^Use\s+(Fola|Arlo|Cleo|Finn|Gero|Lora|Neno|Olin|Tari)$/i);
+  if (useVoiceMatch) {
+    return `使用 ${useVoiceMatch[1]}`;
+  }
+
+  // 28. Dynamic Regex translation for "N h/d/m limit"
+  const nLimitMatch = normalizedText.match(/^(\d+)\s*(s|m|h|d)\s+limit$/i);
+  if (nLimitMatch) {
+    const unitMap = { s: '秒', m: '分钟', h: '小时', d: '天' };
+    return `${nLimitMatch[1]} ${unitMap[nLimitMatch[2].toLowerCase()] || nLimitMatch[2]}限额`;
+  }
+
   return null;
 }
 
@@ -271,7 +305,43 @@ const cases = [
   'Good Response',
   'Bad Response',
   'Google One Referral',
-  'Gemini Flash Next'
+  'Gemini Flash Next',
+  // ===== 2.31.2 用户反馈未汉化部分专项测试 =====
+  // 1. 界面布局 (Image 1)
+  'Knowledge Work',
+  'Simplified interface for research, writing, and everyday tasks.',
+  'Software Engineering',
+  'Full interface for coding, developer tools, and managing agents.',
+  // 2. 语音模式 (Image 2)
+  'Voice mode',
+  'The voice used in Voice mode. Powered by Gemini Live.',
+  'Not set',
+  'Change',
+  'Use Fola',
+  // 3. 浏览器服务 (Image 3)
+  'Built-in Browser',
+  'External Browser',
+  'Folder where files downloaded in the built-in browser are saved.',
+  'Change...',
+  'Browsing History',
+  'Clear visited URLs and autocomplete suggestions from the built-in browser.',
+  'Configure allowed and denied URLs for the browser subagent. It runs in the built-in browser, so no separate browser install is needed.',
+  // 4. 会话管理与自定义配置 (Image 4)
+  'Settings for conversations outside of projects.',
+  'The breakdown below shows token usage from customizations like rules, skills, and MCP. If a budget is exceeded, large rules are demoted to path pointers and large customizations are excluded automatically.',
+  'Other Customizations',
+  'Show 1 breakdown',
+  'Mcp Tools',
+  // 5. 模型与用量 (Image 5)
+  'Models & Usage',
+  'Your Plan: Google AI Pro',
+  'When toggled on, Antigravity will use your AI credits to fulfill model requests once you\'re out of model quota. Antigravity will always use your model quota first before using AI credits.',
+  'Gemini Models',
+  'Claude and GPT models',
+  'Weekly Limit Remaining',
+  'Five Hour Limit Remaining',
+  'Resets in 3d 4h',
+  'Resets in <1m'
 ];
 
 let hit = 0, miss = 0;

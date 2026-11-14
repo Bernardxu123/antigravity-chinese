@@ -86,7 +86,7 @@ async function main() {
 
       const budgetMatch = normalizedText.match(/^([\\d.]+)%\\s+of\\s+the\\s+customization\\s+budget\\s+is\\s+available\\.$/i);
       if (budgetMatch) return \`可用自定义额度为 \${budgetMatch[1]}%。\`;
-      const breakdownsMatch = normalizedText.match(/^Show\\s+(\\d+)\\s+breakdowns$/i);
+      const breakdownsMatch = normalizedText.match(/^Show\\s+(\\d+)\\s+breakdowns?$/i);
       if (breakdownsMatch) return \`查看 \${breakdownsMatch[1]} 项使用细分\`;
       const skillsMatch = normalizedText.match(/^Skills\\s*\\((\\d+)\\)$/i);
       if (skillsMatch) return \`已启用智能体技能 (\${skillsMatch[1]})\`;
@@ -132,6 +132,39 @@ async function main() {
       const closeTabMatch = normalizedText.match(/^Close\\s+(.+)$/i);
       if (closeTabMatch && closeTabMatch[1].length > 3) {
         return \`关闭 \${closeTabMatch[1]}\`;
+      }
+
+      // 25. Dynamic Regex translation for "Your Plan: ..."
+      const yourPlanMatch = normalizedText.match(/^Your\\s+Plan:\\s*(.+)$/i);
+      if (yourPlanMatch) {
+        return \`您的计划：\${yourPlanMatch[1]}\`;
+      }
+
+      // 26. Dynamic Regex translation for "Resets in ..."
+      const resetsInMatch = normalizedText.match(/^Resets\\s+in\\s+(.+)$/i);
+      if (resetsInMatch) {
+        let t = resetsInMatch[1].trim();
+        if (t === '<1m') return '将在 1 分钟内重置';
+        t = t.replace(/\\s+/g, ' ')
+             .replace(/(\\d+)\\s*d/g, '$1 天 ')
+             .replace(/(\\d+)\\s*h/g, '$1 小时 ')
+             .replace(/(\\d+)\\s*m/g, '$1 分钟')
+             .replace(/\\s+/g, ' ')
+             .trim();
+        return \`将在 \${t} 后重置\`;
+      }
+
+      // 27. Dynamic Regex translation for "Use <Voice>"
+      const useVoiceMatch = normalizedText.match(/^Use\\s+(Fola|Arlo|Cleo|Finn|Gero|Lora|Neno|Olin|Tari)$/i);
+      if (useVoiceMatch) {
+        return \`使用 \${useVoiceMatch[1]}\`;
+      }
+
+      // 28. Dynamic Regex translation for "N h/d/m limit"
+      const nLimitMatch = normalizedText.match(/^(\\d+)\\s*(s|m|h|d)\\s+limit$/i);
+      if (nLimitMatch) {
+        const unitMap = { s: '秒', m: '分钟', h: '小时', d: '天' };
+        return \`\${nLimitMatch[1]} \${unitMap[nLimitMatch[2].toLowerCase()] || nLimitMatch[2]}限额\`;
       }
 
       return null;
