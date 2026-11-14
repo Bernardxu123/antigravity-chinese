@@ -4,6 +4,34 @@
 
 ---
 
+## [v2.32.1] - 2026-11-14
+
+### 🌟 新特性与远程工作流适配
+- **跨设备会话接续 (Remote Handoff & QR Code)**：
+  - 汉化在其他设备打开会话对话框（`Open on another device` $\rightarrow$ `在其他设备上打开`）；
+  - 汉化移动端/浏览器扫码无缝接续提示（`Pick up this remote conversation on your phone or in any browser. Scan the QR code or open the link below.` $\rightarrow$ `在手机或任何浏览器中继续此远程会话。扫描二维码或打开下方链接。`）；
+  - 汉化 `Remote Control link`、`Conversation link` 等辅助标签。
+- **评论草稿与审查交互 (Comment Drafts)**：
+  - 汉化未发送评论草稿恢复与放弃（`Resume comment draft` / `Discard comment draft`）；
+  - 汉化单份评论草稿提示（`Resume 1 comment draft` $\rightarrow$ `恢复 1 份评论草稿`、`1 Draft` $\rightarrow$ `1 份草稿`）。
+- **提示词导航与消息管理 (Prompt Navigation & Turns)**：
+  - 汉化上一条/下一条提示词快速跳转（`Jump to Previous Prompt` $\rightarrow$ `跳转至上一条提示词`、`Jump to Next Prompt` $\rightarrow$ `跳转至下一条提示词`）；
+  - 汉化回车发送备选快捷键（`Submit Prompt (Alternate to Enter)` $\rightarrow$ `提交提示词（回车键的备选快捷键）`、`Enter always submits. This adds a second shortcut.`）；
+  - 汉化会话全部标记已读/未读（`Mark All as Read`、`Mark This Conversation as Read/Unread`）。
+- **SSH 远程开发与主机连接 (SSH Remote & Hosts)**：
+  - 汉化 SSH 主机连接向导（`Connect to SSH Host…` $\rightarrow$ `连接到 SSH 主机…`、`Stop SSH Server…` $\rightarrow$ `停止 SSH 服务器…`）；
+  - 汉化工作空间快速切回本机（`Switch to This Computer` $\rightarrow$ `切换至此电脑`）；
+  - 汉化 SSH 配置列表与主机管理（`SSH Host`、`SSH Config`、`Local Checkout` $\rightarrow$ `本地检出`）。
+- **组织管控与诊断提示 (Organization Policy & Errors)**：
+  - 汉化组织只读 MCP 规则提示（`Organization MCP Allowlist (Read-Only)`）；
+  - 汉化本地克隆与解档失败对话框（`Failed to clone project locally`、`Failed to unarchive local project`）；
+  - 汉化智能体暂停/停止交互与状态提示（`Resume this agent where it paused`、`Stop this agent`、`Stopped`）。
+- **词典扩充**：
+  - 新增词条源文件 `entries_k_2321.json`（共 62 个新词条）；
+  - 词典词条总数扩充至 **2,881 条**。
+
+---
+
 ## [v2.31.2] - 2026-11-13
 
 ### 🔧 细节增强与设置页全景汉化（2026-11-14 深度适配）

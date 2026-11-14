@@ -1,7 +1,7 @@
 {
   "name": "antigravity-chinese-patch",
-  "version": "2.31.2",
-  "description": "Google Antigravity 桌面版全功能中文汉化补丁（支持 2.x 全版本，持续跟进 2.31.2 最新版）",
+  "version": "2.32.1",
+  "description": "Google Antigravity 桌面版全功能中文汉化补丁（支持 2.x 全版本，持续跟进 2.32.1 最新版）",
   "main": "patch.js",
   "scripts": {
     "patch": "node patch.js",
