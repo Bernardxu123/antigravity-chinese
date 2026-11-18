@@ -730,13 +730,36 @@ function buildInjectScript(dict) {
       return \`\${nLimitMatch[1]} \${unitMap[nLimitMatch[2].toLowerCase()] || nLimitMatch[2]}限额\`;
     }
 
+    // 29. Dynamic Regex translation for Welcome greetings (Screenshot 1)
+    const welcomeMatch = normalizedText.match(/^Welcome\\s+back,\\s*(.+?)\\.\\s*Where\\s+should\\s+we\\s+pick\\s+up\\?$/i);
+    if (welcomeMatch) {
+      return \`欢迎回来，\${welcomeMatch[1]}。我们要从哪里继续？\`;
+    }
+    const heyMatch = normalizedText.match(/^Hey\\s+(.+?),\\s*what\\s+should\\s+we\\s+build\\s+today\\?$/i);
+    if (heyMatch) {
+      return \`嗨 \${heyMatch[1]}，今天我们要做点什么？\`;
+    }
+    const goodToSeeMatch = normalizedText.match(/^Good\\s+to\\s+see\\s+you,\\s*(.+?)\\.\\s*What's\\s+next\\?$/i);
+    if (goodToSeeMatch) {
+      return \`很高兴见到你，\${goodToSeeMatch[1]}。接下来做什么？\`;
+    }
+    const existsMatch = normalizedText.match(/^A\\s+(.+?)\\s+with\\s+this\\s+name\\s+already\\s+exists\\.$/i);
+    if (existsMatch) {
+      return \`已存在同名的 \${existsMatch[1]}。\`;
+    }
+    const editNameMatch = normalizedText.match(/^Edit\\s+(.+?)\\s+name$/i);
+    if (editNameMatch) {
+      return \`编辑 \${editNameMatch[1]} 名称\`;
+    }
+
     return null;
   }
 
   function translateNode(node) {
     if (node.nodeType === Node.TEXT_NODE) {
-      const translated = translateText(node.textContent);
-      if (translated !== null) {
+      const current = node.textContent;
+      const translated = translateText(current);
+      if (translated !== null && current !== translated) {
         node.textContent = translated;
       }
     } else if (node.nodeType === Node.ELEMENT_NODE) {
@@ -747,33 +770,53 @@ function buildInjectScript(dict) {
       // Input placeholders
       if (node.tagName === 'INPUT' || node.tagName === 'TEXTAREA') {
         const placeholder = node.getAttribute('placeholder');
-        const translated = translateText(placeholder);
-        if (translated !== null) {
-          node.setAttribute('placeholder', translated);
+        if (placeholder) {
+          const translated = translateText(placeholder);
+          if (translated !== null && placeholder !== translated) {
+            node.setAttribute('placeholder', translated);
+          }
         }
       }
       // Tooltips and titles
       if (node.hasAttribute('title')) {
         const title = node.getAttribute('title');
-        const translated = translateText(title);
-        if (translated !== null) {
-          node.setAttribute('title', translated);
+        if (title) {
+          const translated = translateText(title);
+          if (translated !== null && title !== translated) {
+            node.setAttribute('title', translated);
+          }
         }
       }
       // ARIA labels (commonly used by icon-only buttons)
       if (node.hasAttribute('aria-label')) {
         const ariaLabel = node.getAttribute('aria-label');
-        const translated = translateText(ariaLabel);
-        if (translated !== null) {
-          node.setAttribute('aria-label', translated);
+        if (ariaLabel) {
+          const translated = translateText(ariaLabel);
+          if (translated !== null && ariaLabel !== translated) {
+            node.setAttribute('aria-label', translated);
+          }
         }
       }
       // Translate buttons/inputs with values
       if (node.tagName === 'INPUT' && (node.type === 'button' || node.type === 'submit')) {
         const val = node.value;
-        const translated = translateText(val);
-        if (translated !== null) {
-          node.value = translated;
+        if (val) {
+          const translated = translateText(val);
+          if (translated !== null && val !== translated) {
+            node.value = translated;
+          }
+        }
+      }
+      // Handle buttons where children are separate text nodes (e.g. "Delete " and "Project")
+      if (node.tagName === 'BUTTON' && node.childNodes.length > 1) {
+        const isAllText = Array.from(node.childNodes).every(c => c.nodeType === Node.TEXT_NODE);
+        if (isAllText) {
+          const fullText = node.textContent;
+          const translated = translateText(fullText);
+          if (translated !== null && fullText !== translated) {
+            node.textContent = translated;
+            return;
+          }
         }
       }
       // Check children
@@ -820,7 +863,7 @@ function buildInjectScript(dict) {
   // Translate document title
   const originalTitle = document.title;
   const translatedTitle = translateText(originalTitle);
-  if (translatedTitle !== null) {
+  if (translatedTitle !== null && originalTitle !== translatedTitle) {
     document.title = translatedTitle;
   }
   

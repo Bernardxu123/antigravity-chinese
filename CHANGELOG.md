@@ -4,6 +4,33 @@
 
 ---
 
+## [v2.32.2] - 2026-11-18
+
+### 🐛 关键缺陷修复 (Critical Bug Fix)
+- **彻底修复点击“自定义配置”界面卡死 (Customizations Hang / Freeze Fix)**：
+  - **根本原因定位**：Chromium 在重新赋值 `textNode.textContent = value` 时，即便新旧内容完全相同亦会派发 `characterData` 类型的 MutationRecord（已通过 DevTools 协议在真实渲染进程实测确认，连脱离文档的 Text 节点同值赋值也会派发）；而应用商店中的卡片（如品牌名 `Google Drive` 等）在旧词典中存在等值映射（`"Google Drive": "Google Drive"`），导致 `MutationObserver` 陷入死循环递归派发微任务，进而导致整个渲染进程 UI 线程 100% 占满假死；
+  - **防御性修复机制**：
+    1. 在 `translateNode` 中对 TextNode、placeholder、title、aria-label、button value 均增加 `current !== translated` 变更前置校验，内容一致时坚决不触发 DOM 写操作；
+    2. 清理词典中无效的恒等词条，避免无意义的查找与比对；
+    3. 支持原生 `<button>` 子节点为多 TextNode 时的聚合匹配与翻译，彻底解决类似 `Delete Project` 渲染为 `删除Project` 的多节点拼接翻译问题。
+
+### 🌟 新特性与界面汉化覆盖扩充
+- **欢迎页个性化问候与快捷建议卡片 (Home Greetings & Suggestions)**：
+  - 新增动态问候语正则匹配，完美适配带用户名问候（如 `Welcome back, 徐小设. Where should we pick up?` $\rightarrow$ `欢迎回来，徐小设。我们要从哪里继续？`、`Hey <name>, what should we build today?` $\rightarrow$ `嗨 <name>，今天我们要做点什么？`、`Good to see you, <name>. What's next?` $\rightarrow$ `很高兴见到你，<name>。接下来做什么？`）；
+  - 全量汉化欢迎页官方预设建议卡片（`Build a page from my Figma design` $\rightarrow$ `根据我的 Figma 设计构建页面`、`Turn a screenshot into a web page` $\rightarrow$ `将屏幕截图转换为网页`、`Write a design brief from my research` $\rightarrow$ `根据我的研究撰写设计简报` 等各大专业角色卡片）。
+- **设置与权限详情文案 (Settings & Tool Permissions)**：
+  - 汉化语音模式音量说明（`How loud Antigravity's voice is.` $\rightarrow$ `Antigravity 语音的音量大小。`）；
+  - 汉化文件与终端工具权限说明（`Modify permissions for file and terminal tools.` $\rightarrow$ `修改文件与终端工具的权限。`）。
+- **Swarm 与项目危险操作区域 (Swarm & Danger Zone)**：
+  - 汉化项目设置与权限说明（`Manage project folders, agent settings, and permissions.` $\rightarrow$ `管理项目文件夹、智能体设置和权限。`）；
+  - 汉化 Swarm 自动化任务托管项目删除警告（`This project is managed by the Swarm automation and can only be deleted by deleting that automation.` $\rightarrow$ `此项目由 Swarm 自动化任务管理，只能通过删除该自动化任务来删除。`）；
+  - 修复删除按钮多文本节点拼接翻译（`Delete Project` $\rightarrow$ `删除项目`）。
+- **词典扩充**：
+- 新增词条源文件 `entries_l_2322.json`（共 45 个新词条）；
+- 词典词条总数扩充至 **2,920 条**（已同步剔除 `Google Drive`、`Cookie`、`Gemini Flash Next`、`Gemini 2.5/3 Pro/3.1 Flash Image` 共 6 条恒等占位词条及 entries 源文件中的同款，防止未来重新合并时复活）。
+
+---
+
 ## [v2.32.1] - 2026-11-14
 
 ### 🌟 新特性与远程工作流适配

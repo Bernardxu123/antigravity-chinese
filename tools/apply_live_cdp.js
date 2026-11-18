@@ -167,34 +167,77 @@ async function main() {
         return \`\${nLimitMatch[1]} \${unitMap[nLimitMatch[2].toLowerCase()] || nLimitMatch[2]}限额\`;
       }
 
+      // 29. Dynamic Regex translation for Welcome greetings (Screenshot 1)
+      const welcomeMatch = normalizedText.match(/^Welcome\\s+back,\\s*(.+?)\\.\\s*Where\\s+should\\s+we\\s+pick\\s+up\\?$/i);
+      if (welcomeMatch) {
+        return \`欢迎回来，\${welcomeMatch[1]}。我们要从哪里继续？\`;
+      }
+      const heyMatch = normalizedText.match(/^Hey\\s+(.+?),\\s*what\\s+should\\s+we\\s+build\\s+today\\?$/i);
+      if (heyMatch) {
+        return \`嗨 \${heyMatch[1]}，今天我们要做点什么？\`;
+      }
+      const goodToSeeMatch = normalizedText.match(/^Good\\s+to\\s+see\\s+you,\\s*(.+?)\\.\\s*What's\\s+next\\?$/i);
+      if (goodToSeeMatch) {
+        return \`很高兴见到你，\${goodToSeeMatch[1]}。接下来做什么？\`;
+      }
+      const existsMatch = normalizedText.match(/^A\\s+(.+?)\\s+with\\s+this\\s+name\\s+already\\s+exists\\.$/i);
+      if (existsMatch) {
+        return \`已存在同名的 \${existsMatch[1]}。\`;
+      }
+      const editNameMatch = normalizedText.match(/^Edit\\s+(.+?)\\s+name$/i);
+      if (editNameMatch) {
+        return \`编辑 \${editNameMatch[1]} 名称\`;
+      }
+
       return null;
     }
 
     function translateNode(node) {
       if (node.nodeType === Node.TEXT_NODE) {
-        const translated = translateText(node.textContent);
-        if (translated !== null) node.textContent = translated;
+        const current = node.textContent;
+        const translated = translateText(current);
+        if (translated !== null && current !== translated) node.textContent = translated;
       } else if (node.nodeType === Node.ELEMENT_NODE) {
         if (isExcludedElement(node)) return;
         if (node.tagName === 'INPUT' || node.tagName === 'TEXTAREA') {
           const ph = node.getAttribute('placeholder');
-          const t = translateText(ph);
-          if (t !== null) node.setAttribute('placeholder', t);
+          if (ph) {
+            const t = translateText(ph);
+            if (t !== null && ph !== t) node.setAttribute('placeholder', t);
+          }
         }
         if (node.hasAttribute('title')) {
           const val = node.getAttribute('title');
-          const t = translateText(val);
-          if (t !== null) node.setAttribute('title', t);
+          if (val) {
+            const t = translateText(val);
+            if (t !== null && val !== t) node.setAttribute('title', t);
+          }
         }
         if (node.hasAttribute('aria-label')) {
           const val = node.getAttribute('aria-label');
-          const t = translateText(val);
-          if (t !== null) node.setAttribute('aria-label', t);
+          if (val) {
+            const t = translateText(val);
+            if (t !== null && val !== t) node.setAttribute('aria-label', t);
+          }
         }
         if (node.tagName === 'INPUT' && (node.type === 'button' || node.type === 'submit')) {
           const val = node.value;
-          const t = translateText(val);
-          if (t !== null) node.value = t;
+          if (val) {
+            const t = translateText(val);
+            if (t !== null && val !== t) node.value = t;
+          }
+        }
+        // Handle buttons where children are separate text nodes (e.g. "Delete " and "Project")
+        if (node.tagName === 'BUTTON' && node.childNodes.length > 1) {
+          const isAllText = Array.from(node.childNodes).every(c => c.nodeType === Node.TEXT_NODE);
+          if (isAllText) {
+            const fullText = node.textContent;
+            const t = translateText(fullText);
+            if (t !== null && fullText !== t) {
+              node.textContent = t;
+              return;
+            }
+          }
         }
         for (let child of node.childNodes) {
           translateNode(child);

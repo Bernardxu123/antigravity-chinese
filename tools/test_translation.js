@@ -112,6 +112,28 @@ function translateText(text) {
     return `${nLimitMatch[1]} ${unitMap[nLimitMatch[2].toLowerCase()] || nLimitMatch[2]}限额`;
   }
 
+  // 29. Dynamic Regex translation for Welcome greetings (Screenshot 1)
+  const welcomeMatch = normalizedText.match(/^Welcome\s+back,\s*(.+?)\.\s*Where\s+should\s+we\s+pick\s+up\?$/i);
+  if (welcomeMatch) {
+    return `欢迎回来，${welcomeMatch[1]}。我们要从哪里继续？`;
+  }
+  const heyMatch = normalizedText.match(/^Hey\s+(.+?),\s*what\s+should\s+we\s+build\s+today\?$/i);
+  if (heyMatch) {
+    return `嗨 ${heyMatch[1]}，今天我们要做点什么？`;
+  }
+  const goodToSeeMatch = normalizedText.match(/^Good\s+to\s+see\s+you,\s*(.+?)\.\s*What's\s+next\?$/i);
+  if (goodToSeeMatch) {
+    return `很高兴见到你，${goodToSeeMatch[1]}。接下来做什么？`;
+  }
+  const existsMatch = normalizedText.match(/^A\s+(.+?)\s+with\s+this\s+name\s+already\s+exists\.$/i);
+  if (existsMatch) {
+    return `已存在同名的 ${existsMatch[1]}。`;
+  }
+  const editNameMatch = normalizedText.match(/^Edit\s+(.+?)\s+name$/i);
+  if (editNameMatch) {
+    return `编辑 ${editNameMatch[1]} 名称`;
+  }
+
   return null;
 }
 
@@ -127,7 +149,6 @@ const cases = [
   'Whether the agent asks you to review its documents.',
   'Learn more about',
   'Configure the browser subagent. It requires',
-  'Google Chrome',
   'to be installed.',
   'The browser subagent can be invoked by typing /browser in the conversation input box.',
   // 截图2：浏览器 JS 执行策略下拉
@@ -146,7 +167,6 @@ const cases = [
   'Disables all safety barriers for maximal iteration velocity.',
   // 其他新词条抽查
   'Untitled project',
-  'Antigravity',
   // ===== 2.23.0 截图（主界面）=====
   'New Conversation',
   'Conversation History',
@@ -305,7 +325,6 @@ const cases = [
   'Good Response',
   'Bad Response',
   'Google One Referral',
-  'Gemini Flash Next',
   // ===== 2.31.2 用户反馈未汉化部分专项测试 =====
   // 1. 界面布局 (Image 1)
   'Knowledge Work',
@@ -378,7 +397,25 @@ const cases = [
   'Stop this agent',
   'Stopped',
   'Not signed in',
-  'Organization MCP Allowlist (Read-Only)'
+  'Organization MCP Allowlist (Read-Only)',
+  // ===== 2.32.2 新版特性与缺陷修复抽查 =====
+  'Welcome back, 徐小设. Where should we pick up?',
+  'Hey 徐小设, what should we build today?',
+  'Good to see you, 徐小设. What\'s next?',
+  'Where should we pick up?',
+  'Build a page from my Figma design',
+  'Turn a screenshot into a web page',
+  'Write a design brief from my research',
+  'How loud Antigravity\'s voice is.',
+  'How loud Jetski\'s voice is.',
+  'Modify permissions for file and terminal tools.',
+  'Modify permissions for file, terminal, and MCP tools.',
+  'Manage project folders, agent settings, and permissions.',
+  'This project is managed by the Swarm automation and can only be deleted by deleting that automation.',
+  'A project with this name already exists.',
+  'Edit project name',
+  'Project',
+  'Browser Use'
 ];
 
 let hit = 0, miss = 0;
@@ -390,7 +427,8 @@ for (const c of cases) {
 console.log(`\n命中 ${hit} / ${cases.length}，未命中 ${miss}`);
 
 // 确保不应被翻译的字符串不受影响
-const shouldNotTranslate = ['Antigravity', 'Google Chrome', '/browser', 'main.js'];
+// （品牌名 / 型号名刻意保留英文：恒等词条已在 v2.32.2 清理，配合写入防护彻底杜绝同值写死循环）
+const shouldNotTranslate = ['Antigravity', 'Google Chrome', 'Gemini Flash Next', '/browser', 'main.js'];
 for (const c of shouldNotTranslate) {
   const r = translateText(c);
   if (r !== null) console.log(`[警告] 不应翻译却被翻译: ${c} -> ${r}`);
