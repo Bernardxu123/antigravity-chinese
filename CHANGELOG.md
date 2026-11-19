@@ -4,6 +4,41 @@
 
 ---
 
+## [v2.33.0] - 2026-11-19
+
+### 🌟 新特性与侧边栏高级筛选深度适配
+- **侧边栏多维筛选与视图选项 (Sidebar Filter & View Options)**：
+  - 汉化项目/工作空间排序菜单（`Sort Projects` $\rightarrow$ `项目排序`、`Sort Workspaces` $\rightarrow$ `工作空间排序`）；
+  - 汉化自动置顶与归档筛选（`Auto Pin` $\rightarrow$ `自动置顶`、`Archived Only` $\rightarrow$ `仅已归档`）；
+  - 汉化侧边栏定时任务筛选（`Scheduled` $\rightarrow$ `定时任务`）；
+  - 汉化空置顶状态文案（`No pinned conversations` $\rightarrow$ `无置顶会话`）；
+  - 汉化副标题与徽章修饰菜单（`Subtitles` $\rightarrow$ `副标题`、`Decorations` $\rightarrow$ `修饰标签`、`Display Options` $\rightarrow$ `显示选项`）。
+- **会话与标签页置顶/快速操作 (Pinning & Quick Actions)**：
+  - 汉化会话右键菜单置顶/取消置顶（`Pin` $\rightarrow$ `置顶`、`Unpin` $\rightarrow$ `取消置顶`）；
+  - 汉化标签页右键菜单置顶/取消置顶（`Pin Tab` $\rightarrow$ `固定标签页`、`Unpin Tab` $\rightarrow$ `取消固定标签页`）。
+- **地址栏/快速打开与新标签页搜索 (Quick Open & Search Navigation)**：
+  - 汉化新建标签页/地址栏输入框引导文案（`Search or enter a URL` $\rightarrow$ `搜索或输入网址`、`Enter a URL (e.g. http://localhost:8080)` $\rightarrow$ `输入网址（例如 http://localhost:8080）`）；
+  - 汉化通用搜索栏占位符与无障碍说明（`Search tabs, files and more` $\rightarrow$ `搜索标签页、文件及更多内容`、`Search for content to open` $\rightarrow$ `搜索要打开的内容`、`Address bar suggestions` $\rightarrow$ `地址栏建议`）。
+- **浏览器数据清理与快捷键方案管理 (Browsing Data & Keybinding Scheme)**：
+  - 汉化浏览器数据清理确认弹窗与说明（`Clear Browsing Data?` $\rightarrow$ `清除浏览数据？`、`Clear history, cookies and site data from the built-in browser, or manage cookies for each site.` $\rightarrow$ `清除内置浏览器的历史记录、Cookie 和网站数据，或管理各个网站的 Cookie。`、`Browsing Data` $\rightarrow$ `浏览数据`、`Sites with cookies` $\rightarrow$ `包含 Cookie 的网站`、`Cookies by Site` $\rightarrow$ `按网站划分的 Cookie`）；
+  - 汉化快捷键方案选择交互（`Keybinding Scheme` $\rightarrow$ `快捷键方案`、`Choose between non-colliding VS Code defaults or standalone Antigravity chords.` $\rightarrow$ `在无冲突的 VS Code 默认快捷键或独立的 Antigravity 组合键之间进行选择。`、`All active Antigravity shortcuts and user keybinding overrides are managed directly by VS Code.` $\rightarrow$ `所有处于活跃状态的 Antigravity 快捷键和用户自定义快捷键覆盖均由 VS Code 直接管理。`、`Manage your keybinding scheme and customize shortcuts in VS Code.` $\rightarrow$ `管理您的快捷键方案并在 VS Code 中自定义快捷键。`、`Customize Shortcuts` $\rightarrow$ `自定义快捷键`、`Antigravity (AGY) Style` $\rightarrow$ `Antigravity (AGY) 风格`、`VS Code Default` $\rightarrow$ `VS Code 默认`）。
+- **智能体控制与功能包/旁支提问细节增强 (Agent Controls, Bundles & Side Questions)**：
+  - 汉化语音听写状态（`Voice dictation unavailable` $\rightarrow$ `语音听写不可用`）；
+  - 汉化智能体中断与单独安装提示（`Interrupt Agent` $\rightarrow$ `中断智能体`、`Installed separately` $\rightarrow$ `单独安装`、`No longer available` $\rightarrow$ `不再可用`）；
+  - 汉化功能包审查与添加（`Review bundle before adding` $\rightarrow$ `添加前审查功能包`、`Bundles` $\rightarrow$ `功能包`、`Add bundle` $\rightarrow$ `添加功能包`）；
+  - 汉化旁支提问状态与无障碍交互（`This side question isn't available in this conversation.` $\rightarrow$ `此旁支提问在当前会话中不可用。`、`The main conversation's input isn't available right now.` $\rightarrow$ `主会话输入框当前不可用。`、`Insert into main conversation` $\rightarrow$ `插入到主会话`、`Promote to conversation` $\rightarrow$ `提升为独立会话` 等）。
+
+### 🛡️ 稳固防御机制 (Defensive Architecture Safeguards)
+- **恒等词条防死循环熔断保障**：
+  - 延续并加固 v2.32.2 修复的防假死机制：所有 DOM 写入路径坚守 `current !== translated` 变更前置校验，坚决不触发同值写操作以避免 Chromium 派发 `characterData` 导致 MutationObserver 死循环；
+  - 在 `tools/merge_entries.js` 中新增恒等词条自动化熔断过滤（`if (en === zh) continue`），从源头上杜绝任何等值占位词条（如品牌名、型号名）混入 `dictionary.json`；
+  - `tools/test_translation.js` 扩展 `shouldNotTranslate` 校验清单（涵盖 Google Drive、Cookie、Gemini Flash Next 及各多模态型号），确保专有名词绝不被误翻译或误映射。
+- **词典扩充**：
+  - 新增词条源文件 `entries_m_2330.json`（新增 57 个新词条）；
+  - 词典词条总数扩充至 **2,977 条**（0 恒等词条，100% 纯有效中文映射）。
+
+---
+
 ## [v2.32.2] - 2026-11-18
 
 ### 🐛 关键缺陷修复 (Critical Bug Fix)

@@ -415,7 +415,28 @@ const cases = [
   'A project with this name already exists.',
   'Edit project name',
   'Project',
-  'Browser Use'
+  'Browser Use',
+  // ===== 2.33.0 新版特性与侧边栏/置顶/快速搜索抽查 =====
+  'Pin',
+  'Unpin',
+  'Pin Tab',
+  'Unpin Tab',
+  'Auto Pin',
+  'Archived Only',
+  'Sort Projects',
+  'Sort Workspaces',
+  'No pinned conversations',
+  'Scheduled',
+  'Subtitles',
+  'Decorations',
+  'Display Options',
+  'Search or enter a URL',
+  'Search tabs, files and more',
+  'Search for content to open',
+  'Clear Browsing Data?',
+  'Keybinding Scheme',
+  'Voice dictation unavailable',
+  'Clear history, cookies and site data from the built-in browser, or manage cookies for each site.'
 ];
 
 let hit = 0, miss = 0;
@@ -428,7 +449,18 @@ console.log(`\n命中 ${hit} / ${cases.length}，未命中 ${miss}`);
 
 // 确保不应被翻译的字符串不受影响
 // （品牌名 / 型号名刻意保留英文：恒等词条已在 v2.32.2 清理，配合写入防护彻底杜绝同值写死循环）
-const shouldNotTranslate = ['Antigravity', 'Google Chrome', 'Gemini Flash Next', '/browser', 'main.js'];
+const shouldNotTranslate = [
+  'Antigravity',
+  'Google Chrome',
+  'Google Drive',
+  'Cookie',
+  'Gemini Flash Next',
+  'Gemini 2.5 Flash Image',
+  'Gemini 3 Pro Image',
+  'Gemini 3.1 Flash Image',
+  '/browser',
+  'main.js'
+];
 for (const c of shouldNotTranslate) {
   const r = translateText(c);
   if (r !== null) console.log(`[警告] 不应翻译却被翻译: ${c} -> ${r}`);

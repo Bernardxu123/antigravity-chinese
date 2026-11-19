@@ -1,13 +1,13 @@
 # Google Antigravity 桌面端中文汉化补丁 (2.x 全版本)
 
-[![Version](https://img.shields.io/badge/Antigravity-v2.32.2-blue.svg)](https://github.com/Bernardxu123/antigravity-chinese)
+[![Version](https://img.shields.io/badge/Antigravity-v2.33.0-blue.svg)](https://github.com/Bernardxu123/antigravity-chinese)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](https://github.com/Bernardxu123/antigravity-chinese)
-[![Dictionary](https://img.shields.io/badge/dictionary-2920%2B%20entries-orange.svg)](dictionary.json)
+[![Dictionary](https://img.shields.io/badge/dictionary-2970%2B%20entries-orange.svg)](dictionary.json)
 
 本项目为 Google 官方出品的下一代 AI 编程智能体工具 **Google Antigravity 桌面端** 提供高品质、无损、深度集成的界面中文汉化补丁。
 
-持续跟进官方发布动态，当前已深度适配 **v2.32.2（2026年11月最新版）**，同时向下兼容 2.x 全系版本。
+持续跟进官方发布动态，当前已深度适配 **v2.33.0（2026年11月最新版）**，同时向下兼容 2.x 全系版本。
 
 ---
 
@@ -26,7 +26,8 @@
 
 | Antigravity 版本 | 汉化支持状态 | 词典词条数 | 重点更新内容 |
 | :--- | :---: | :---: | :--- |
-| **v2.32.2**（最新） | 🌟 完美支持 | **2,920** | 修复“自定义配置”界面死循环假死问题；欢迎页带用户名动态问候语与专业技能建议卡片；语音音量说明；工具权限详情；Swarm 危险操作区警告与删除按钮多文本节点合并汉化等 |
+| **v2.33.0**（最新） | 🌟 完美支持 | **2,977** | 侧边栏多维筛选/排序（项目排序、工作空间排序、自动置顶、仅已归档、定时任务、副标题与修饰标签）；会话右键菜单置顶/取消置顶（Pin/Unpin）；标签页置顶/取消置顶（Pin Tab/Unpin Tab）；顶部快速搜索与 URL 打开引导（Search or enter a URL）；浏览器数据清理与 Cookie 管理；快捷键方案配置等 |
+| **v2.32.2** | ✅ 完美支持 | 2,920 | 修复“自定义配置”界面死循环假死问题；欢迎页带用户名动态问候语与专业技能建议卡片；语音音量说明；工具权限详情；Swarm 危险操作区警告与删除按钮多文本节点合并汉化等 |
 | **v2.32.1** | ✅ 完美支持 | 2,881 | 跨设备会话接续 (二维码/链接)、评论草稿断点恢复、提示词上一条/下一条快捷跳转、SSH 远程开发与主机连接、组织 MCP 允许名单等 |
 | **v2.31.2** | ✅ 完美支持 | 2,819 | 协调员体系 (Coordinators)、旁支提问 (Side Questions)、知识工作/软件工程布局、语音音色与预览、浏览器/模型配额设置全量汉化 |
 | **v2.29.0** | ✅ 完美支持 | 2,702 | 自动化 When/Where/What 交互重构、连接器 (Connectors)、回车发送与聊天宽度、屏幕阅读器模式、下载管理器 |
@@ -80,7 +81,7 @@ node patch.js --revert
 ```text
 antigravity-chinese-patch/
 ├── patch.js               # 补丁主引擎（解包、正则修补、preload 注入、重打包）
-├── dictionary.json        # 汉化主词典（2,920 精校词条，精确匹配与空白归一化，无恒等占位词条）
+├── dictionary.json        # 汉化主词典（2,977 精校词条，精确匹配与空白归一化，无恒等占位词条）
 ├── 双击汉化.bat           # Windows 一键执行入口
 ├── run_patch.bat          # 备用 CLI 交互入口
 ├── package.json           # 项目配置与自动化脚本
@@ -104,7 +105,8 @@ antigravity-chinese-patch/
     ├── entries_i_2312.json    # 2.31.2 核心特性词条
     ├── entries_j_2312_settings.json # 2.31.2 设置与深度交互词条
     ├── entries_k_2321.json    # 2.32.1 补充词条
-    └── entries_l_2322.json    # 2.32.2 补充词条（含恒等占位词条清理）
+    ├── entries_l_2322.json    # 2.32.2 补充词条（含恒等占位词条清理）
+    └── entries_m_2330.json    # 2.33.0 侧边栏筛选/排序/置顶/快速搜索词条
 ```
 
 ---

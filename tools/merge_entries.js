@@ -18,6 +18,7 @@ for (const f of files) {
   const entries = JSON.parse(fs.readFileSync(path.join(__dirname, f), 'utf8'));
   for (const [en, zh] of Object.entries(entries)) {
     total++;
+    if (en === zh) { console.warn(`[跳过-恒等词条] ${f}: ${en}`); continue; }
     if (Object.prototype.hasOwnProperty.call(dict, en)) { skipped++; continue; }
     if (!zh || !zh.trim()) { console.warn(`[跳过-译文为空] ${f}: ${en}`); continue; }
     dict[en] = zh;
