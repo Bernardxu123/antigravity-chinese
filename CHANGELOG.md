@@ -4,6 +4,42 @@
 
 ---
 
+## [v2.34.0] - 2026-11-24
+
+### 🌟 新特性与通用设置/编排模型/右键快捷菜单深度适配
+- **全新编排模型与执行模型架构 (Orchestrator & Executor Models)**：
+  - 汉化编排模型与执行模型全套概念（`Orchestrator` $\rightarrow$ `编排模型`、`Orchestrator Settings` $\rightarrow$ `编排模型设置`、`Orchestrator Model` $\rightarrow$ `编排模型`、`Executor Model` $\rightarrow$ `执行模型`）；
+  - 汉化双模型协作说明（`Choose the models Orchestrator uses. A larger, smarter orchestrator model with a faster, cheaper executor gives high quality for fewer tokens.` $\rightarrow$ `选择编排器使用的模型。使用更大、更智能的编排模型配合更快、更低成本的执行模型，能以更少的 Token 获得高质量效果。`）；
+  - 汉化工作规划与顶级模型建议（`Plans the work, makes design decisions, and reviews the result. Pick a top-tier model. You can also pick one per conversation from the Orchestrator row in the model menu.` $\rightarrow$ `规划工作、制定设计决策并审查结果。请选择顶级模型。您也可以在模型菜单的编排模型一栏为每个会话单独挑选。`）。
+- **通用设置与输入框交互 (General Settings & Input Box)**：
+  - 汉化通用设置“输入框”分区主标题（`Input Box` $\rightarrow$ `输入框`）；
+  - 汉化后续排队消息策略（`Queued messages` $\rightarrow$ `排队消息`）；
+  - 汉化回车发送快捷键说明（`Choose which key sends a message in the chat composer.` $\rightarrow$ `选择在聊天输入框中按哪个键发送消息。`、`Enter to send` $\rightarrow$ `按回车键发送`）；
+  - 汉化侧边栏底部反馈入口（`Give Feedback` / `Provide Feedback` $\rightarrow$ `提供反馈`）。
+- **权限预设与工具/网络/沙箱规则 (Permission Preset & Sandbox Details)**：
+  - 汉化全局权限预设标签（`Permission preset` $\rightarrow$ `权限预设`、`Security preset` $\rightarrow$ `安全预设`）；
+  - 汉化权限详情入口标题（`Tool permissions` $\rightarrow$ `工具权限`、`Network access rules` $\rightarrow$ `网络访问规则`、`File access rules` $\rightarrow$ `文件访问规则`）；
+  - 汉化终端命令与沙箱控制文案（`File reads` $\rightarrow$ `文件读取`、`File writes` $\rightarrow$ `文件写入`、`Terminal commands` $\rightarrow$ `终端命令`、`Terminal command auto execution` $\rightarrow$ `终端命令自动执行`、`Enable sandbox mode` $\rightarrow$ `启用沙箱模式`、`Enable terminal sandbox` $\rightarrow$ `启用终端沙箱`、`Commands outside sandbox` $\rightarrow$ `沙箱外部命令`）。
+- **项目/工作空间快捷菜单与动态名称复制 (Context Menu & Copy Name)**：
+  - 汉化右键菜单项（`Copy Project Name` $\rightarrow$ `复制项目名称`、`Copy Workspace Name` $\rightarrow$ `复制工作空间名称`、`Copy Worktree Name` $\rightarrow$ `复制工作树名称`）；
+  - 汉化项目/工作空间置顶与归档（`Pin Project` $\rightarrow$ `置顶项目`、`Unpin Project` $\rightarrow$ `取消置顶项目`、`Pin Workspace` $\rightarrow$ `置顶工作空间`、`Unpin Workspace` $\rightarrow$ `取消置顶工作空间`、`Pin Worktree` $\rightarrow$ `置顶工作树`、`Unpin Worktree` $\rightarrow$ `取消置顶工作树`、`Archive Project` $\rightarrow$ `归档项目`、`Archive Worktree` $\rightarrow$ `归档工作树`、`Worktree Settings` $\rightarrow$ `工作树设置`、`Delete Workspace` $\rightarrow$ `删除工作空间`、`Delete Worktree` $\rightarrow$ `删除工作树`）；
+  - 新增动态正则规则 `Copy (.+?) Name` $\rightarrow$ `复制$1名称`，为未来新实体名称复制提供自适应匹配能力。
+- **侧边栏自定义管理增强 (Customize Sidebar)**：
+  - 汉化侧边栏管理向导（`Customize Sidebar` $\rightarrow$ `自定义侧边栏`、`Show in Sidebar` $\rightarrow$ `在侧边栏中显示`、`New conversation button` $\rightarrow$ `新建会话按钮`、`Show Automation Conversations` $\rightarrow$ `显示自动化任务会话`、`Show Plugin Conversations` $\rightarrow$ `显示插件会话`）；
+  - 汉化侧边栏分区与排序操作（`Filters` $\rightarrow$ `筛选条件`、`Last Activity` $\rightarrow$ `最近活动`、`Pinned` $\rightarrow$ `已置顶`、`Unread` $\rightarrow$ `未读`、`Needs Input` $\rightarrow$ `等待输入`、`Idle Conversations` $\rightarrow$ `空闲会话`、`Unsent draft` $\rightarrow$ `未发送草稿`、`Manual Order` $\rightarrow$ `手动排序`、`Move Up` $\rightarrow$ `上移`、`Move Down` $\rightarrow$ `下移`、`Hide` $\rightarrow$ `隐藏`、`Show 5` $\rightarrow$ `显示 5 条`、`Show 10` $\rightarrow$ `显示 10 条`）；
+  - 新增快捷键动态正则规则 `Select Sidebar Item (\d+)` $\rightarrow$ `选择侧边栏项目 $1`。
+
+### 🛡️ 稳固防御机制 (Defensive Architecture Safeguards)
+- **严格遵循防死循环假死安全红线**：
+  - [patch.js](file:///D:/AI/杂/antigravity-chinese-patch/patch.js) 维持所有 DOM 写操作 `current !== translated` 严格前置校验；
+  - [tools/merge_entries.js](file:///D:/AI/杂/antigravity-chinese-patch/tools/merge_entries.js) 熔断拦截所有恒等词条；
+  - 词典恒等词条数严格保持为 0，专有名词（`Google Drive`、`Cookie`、`Gemini` 诸型号）全量受 `shouldNotTranslate` 测试保护。
+- **词典扩充**：
+  - 新增词条源文件 `entries_n_2340.json`（共 62 个新词条）；
+  - 词典词条总数扩充至 **3,039 条**（通过 306 / 306 项仿真测试）。
+
+---
+
 ## [v2.33.0] - 2026-11-19
 
 ### 🌟 新特性与侧边栏高级筛选深度适配

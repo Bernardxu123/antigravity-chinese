@@ -751,6 +751,16 @@ function buildInjectScript(dict) {
     if (editNameMatch) {
       return \`编辑 \${editNameMatch[1]} 名称\`;
     }
+    const copyNameMatch = normalizedText.match(/^Copy\\s+(.+?)\\s+Name$/i);
+    if (copyNameMatch) {
+      const target = copyNameMatch[1].toLowerCase();
+      const label = target === 'project' ? '项目' : target === 'workspace' ? '工作空间' : target === 'worktree' ? '工作树' : copyNameMatch[1];
+      return \`复制\${label}名称\`;
+    }
+    const sidebarItemMatch = normalizedText.match(/^Select\\s+Sidebar\\s+Item\\s+(\\d+)$/i);
+    if (sidebarItemMatch) {
+      return \`选择侧边栏项目 \${sidebarItemMatch[1]}\`;
+    }
 
     return null;
   }

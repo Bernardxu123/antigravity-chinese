@@ -1,13 +1,13 @@
 # Google Antigravity 桌面端中文汉化补丁 (2.x 全版本)
 
-[![Version](https://img.shields.io/badge/Antigravity-v2.33.0-blue.svg)](https://github.com/Bernardxu123/antigravity-chinese)
+[![Version](https://img.shields.io/badge/Antigravity-v2.34.0-blue.svg)](https://github.com/Bernardxu123/antigravity-chinese)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](https://github.com/Bernardxu123/antigravity-chinese)
-[![Dictionary](https://img.shields.io/badge/dictionary-2970%2B%20entries-orange.svg)](dictionary.json)
+[![Dictionary](https://img.shields.io/badge/dictionary-3030%2B%20entries-orange.svg)](dictionary.json)
 
 本项目为 Google 官方出品的下一代 AI 编程智能体工具 **Google Antigravity 桌面端** 提供高品质、无损、深度集成的界面中文汉化补丁。
 
-持续跟进官方发布动态，当前已深度适配 **v2.33.0（2026年11月最新版）**，同时向下兼容 2.x 全系版本。
+持续跟进官方发布动态，当前已深度适配 **v2.34.0（2026年11月最新版）**，同时向下兼容 2.x 全系版本。
 
 ---
 
@@ -15,7 +15,7 @@
 
 - 🎯 **深度全量覆盖**：包含应用菜单、系统托盘、自动更新弹窗、WSL 集成、新建/设置/自动化任务向导、侧边栏、协调员体系（Coordinators）、旁支提问（Side Questions）、跨设备接续与二维码（Remote Handoff）、SSH 远程连接、连接器（Connectors）、模型与权限预设选择器等全量界面。
 - 🛡️ **代码与业务无损**：严格隔离代码编辑器（Monaco / CodeMirror / ContentEditable 区域）、终端命令行交互、产物生成及文件正文，**绝不触碰任何代码逻辑与通信协议**。
-- ⚡ **动态文本智能匹配**：内置 29 组高精正则替换规则，精准汉化如“思考时长 3s”、“第 2 / 6 轮对话”、“将在 3 天 4 小时 后重置”、“您的计划：Google AI Pro”、“查看 1 项使用细分”、欢迎页动态用户名问候等动态拼装文本。
+- ⚡ **动态文本智能匹配**：内置 31 组高精正则替换规则，精准汉化如“思考时长 3s”、“第 2 / 6 轮对话”、“将在 3 天 4 小时 后重置”、“您的计划：Google AI Pro”、“查看 1 项使用细分”、欢迎页动态用户名问候、复制项目/工作空间名称等动态拼装文本。
 - 🔄 **自动备份与安全还原**：首次应用自动备份官方原始 `app.asar` 到 `app.asar.bak`。后续 Antigravity 自动更新后，脚本会自动检测并刷新备份，随时可通过 `--revert` 一键无缝回退官方原版。
 - 🚀 **在线免重启热生效**：支持 `--no-kill` 热修补模式，不中断当前运行中的智能体任务与会话连接。
 - 🛠️ **完整演进工具链**：内置开箱即用的 Bundle 提取器、主进程 AST/正则校验器、离线翻译仿真套件及 CDP 端到端 DOM 验证工具，版本升级持续维护更轻松。
@@ -26,7 +26,8 @@
 
 | Antigravity 版本 | 汉化支持状态 | 词典词条数 | 重点更新内容 |
 | :--- | :---: | :---: | :--- |
-| **v2.33.0**（最新） | 🌟 完美支持 | **2,977** | 侧边栏多维筛选/排序（项目排序、工作空间排序、自动置顶、仅已归档、定时任务、副标题与修饰标签）；会话右键菜单置顶/取消置顶（Pin/Unpin）；标签页置顶/取消置顶（Pin Tab/Unpin Tab）；顶部快速搜索与 URL 打开引导（Search or enter a URL）；浏览器数据清理与 Cookie 管理；快捷键方案配置等 |
+| **v2.34.0**（最新） | 🌟 完美支持 | **3,039** | 全新双模型架构编排模式（Orchestrator & Executor Models）；项目/工作空间右键菜单“复制项目名称”（Copy Project Name）；通用设置中输入框分区（Input Box）、排队消息策略（Queued messages）、回车快捷键发送设置；权限预设与工具/网络/文件权限详情（Tool permissions / Network access rules）；侧边栏自定义管理（Customize Sidebar）；沙箱与终端命令控制等 |
+| **v2.33.0** | ✅ 完美支持 | 2,977 | 侧边栏多维筛选/排序（项目排序、工作空间排序、自动置顶、仅已归档、定时任务、副标题与修饰标签）；会话右键菜单置顶/取消置顶（Pin/Unpin）；标签页置顶/取消置顶（Pin Tab/Unpin Tab）；顶部快速搜索与 URL 打开引导（Search or enter a URL）；浏览器数据清理与 Cookie 管理；快捷键方案配置等 |
 | **v2.32.2** | ✅ 完美支持 | 2,920 | 修复“自定义配置”界面死循环假死问题；欢迎页带用户名动态问候语与专业技能建议卡片；语音音量说明；工具权限详情；Swarm 危险操作区警告与删除按钮多文本节点合并汉化等 |
 | **v2.32.1** | ✅ 完美支持 | 2,881 | 跨设备会话接续 (二维码/链接)、评论草稿断点恢复、提示词上一条/下一条快捷跳转、SSH 远程开发与主机连接、组织 MCP 允许名单等 |
 | **v2.31.2** | ✅ 完美支持 | 2,819 | 协调员体系 (Coordinators)、旁支提问 (Side Questions)、知识工作/软件工程布局、语音音色与预览、浏览器/模型配额设置全量汉化 |
@@ -81,7 +82,7 @@ node patch.js --revert
 ```text
 antigravity-chinese-patch/
 ├── patch.js               # 补丁主引擎（解包、正则修补、preload 注入、重打包）
-├── dictionary.json        # 汉化主词典（2,977 精校词条，精确匹配与空白归一化，无恒等占位词条）
+├── dictionary.json        # 汉化主词典（3,039 精校词条，精确匹配与空白归一化，无恒等占位词条）
 ├── 双击汉化.bat           # Windows 一键执行入口
 ├── run_patch.bat          # 备用 CLI 交互入口
 ├── package.json           # 项目配置与自动化脚本
@@ -106,7 +107,8 @@ antigravity-chinese-patch/
     ├── entries_j_2312_settings.json # 2.31.2 设置与深度交互词条
     ├── entries_k_2321.json    # 2.32.1 补充词条
     ├── entries_l_2322.json    # 2.32.2 补充词条（含恒等占位词条清理）
-    └── entries_m_2330.json    # 2.33.0 侧边栏筛选/排序/置顶/快速搜索词条
+    ├── entries_m_2330.json    # 2.33.0 侧边栏筛选/排序/置顶/快速搜索词条
+    └── entries_n_2340.json    # 2.34.0 编排模型/输入框设置/项目名称复制词条
 ```
 
 ---

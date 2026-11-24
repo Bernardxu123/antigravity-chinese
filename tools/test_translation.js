@@ -133,6 +133,16 @@ function translateText(text) {
   if (editNameMatch) {
     return `编辑 ${editNameMatch[1]} 名称`;
   }
+  const copyNameMatch = normalizedText.match(/^Copy\s+(.+?)\s+Name$/i);
+  if (copyNameMatch) {
+    const target = copyNameMatch[1].toLowerCase();
+    const label = target === 'project' ? '项目' : target === 'workspace' ? '工作空间' : target === 'worktree' ? '工作树' : copyNameMatch[1];
+    return `复制${label}名称`;
+  }
+  const sidebarItemMatch = normalizedText.match(/^Select\s+Sidebar\s+Item\s+(\d+)$/i);
+  if (sidebarItemMatch) {
+    return `选择侧边栏项目 ${sidebarItemMatch[1]}`;
+  }
 
   return null;
 }
@@ -436,7 +446,35 @@ const cases = [
   'Clear Browsing Data?',
   'Keybinding Scheme',
   'Voice dictation unavailable',
-  'Clear history, cookies and site data from the built-in browser, or manage cookies for each site.'
+  'Clear history, cookies and site data from the built-in browser, or manage cookies for each site.',
+  // ===== 2.34.0 新版特性与通用设置/编排模型/右键复制抽查 =====
+  'Copy Project Name',
+  'Copy Workspace Name',
+  'Permission preset',
+  'Input Box',
+  'Queued messages',
+  'Choose which key sends a message in the chat composer.',
+  'Tool permissions',
+  'Network access rules',
+  'Give Feedback',
+  'Provide Feedback',
+  'Orchestrator',
+  'Orchestrator Settings',
+  'Orchestrator Model',
+  'Executor Model',
+  'Customize Sidebar',
+  'File access rules',
+  'File reads',
+  'File writes',
+  'Terminal commands',
+  'Terminal command auto execution',
+  'Enable sandbox mode',
+  'Enable terminal sandbox',
+  'Commands outside sandbox',
+  'Security preset',
+  'Enter to send',
+  'Select Sidebar Item 3',
+  'Tell the agent what to do instead...'
 ];
 
 let hit = 0, miss = 0;
