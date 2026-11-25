@@ -506,6 +506,10 @@ function buildInjectScript(dict) {
     normalizedDict[key.replace(/\\s+/g, ' ').trim()] = dictionary[key];
   }
 
+  // Track original vs patch-written chunks per Text node for multi-text JSX elements
+  const origTextMap = new WeakMap();
+  const lastWrittenMap = new WeakMap();
+
   // Regions whose text content must never be translated (user code, editable input).
   const EXCLUDE_TAGS = new Set(['SCRIPT', 'STYLE', 'TEXTAREA', 'CODE', 'PRE']);
   const EXCLUDE_SELECTOR = '.monaco-editor, .cm-editor, [contenteditable]:not([contenteditable="false"])';
@@ -762,13 +766,125 @@ function buildInjectScript(dict) {
       return \`选择侧边栏项目 \${sidebarItemMatch[1]}\`;
     }
 
+    // 32. Multi-node empty state: "No <entities> yet"
+    const emptyNounMap = {
+      automation: '自动化任务', automations: '自动化任务',
+      plugin: '插件', plugins: '插件',
+      agent: '智能体', agents: '智能体',
+      coordinator: '协调员', coordinators: '协调员',
+      run: '运行记录', runs: '运行记录',
+      event: '事件', events: '事件',
+      host: '主机', hosts: '主机',
+      skill: '技能', skills: '技能',
+      rule: '规则', rules: '规则',
+      hook: '钩子', hooks: '钩子',
+      server: '服务器', servers: '服务器',
+      workspace: '工作空间', workspaces: '工作空间',
+      project: '项目', projects: '项目'
+    };
+    const noYetMatch = normalizedText.match(/^No\\s+(automations?|plugins?|agents?|coordinators?|runs?|events?|hosts?|skills?|rules?|hooks?|servers?|workspaces?|projects?)\\s+yet$/i);
+    if (noYetMatch) {
+      const noun = emptyNounMap[noYetMatch[1].toLowerCase()] || noYetMatch[1];
+      return \`暂无\${noun}\`;
+    }
+
+    // 33. Multi-node filtered empty state: "No <entities> match “<query>”."
+    const noMatchQuery = normalizedText.match(/^No\\s+(automations?|plugins?|agents?|coordinators?|runs?|events?|hosts?|skills?|rules?|hooks?|servers?|workspaces?|projects?)\\s+match\\s+[“"](.+?)[”"]\\.?$/i);
+    if (noMatchQuery) {
+      const noun = emptyNounMap[noMatchQuery[1].toLowerCase()] || noMatchQuery[1];
+      return \`没有匹配“\${noMatchQuery[2]}”的\${noun}。\`;
+    }
+
+    // 34. Multi-node generic matching empty state: "No matching <entity>"
+    const noMatching = normalizedText.match(/^No\\s+matching\\s+(.+)$/i);
+    if (noMatching) {
+      return \`没有匹配的 \${noMatching[1]}\`;
+    }
+
+    // 35. "No handlers configured for <target>."
+    const noHandlers = normalizedText.match(/^No\\s+handlers\\s+configured\\s+for\\s+(.+?)\\.?$/i);
+    if (noHandlers) {
+      return \`尚未为 \${noHandlers[1]} 配置处理程序。\`;
+    }
+
+    // 36. "No hosts in <path> yet. Type one above."
+    const noHosts = normalizedText.match(/^No\\s+hosts\\s+in\\s+(.+?)\\s+yet\\.\\s*Type\\s+one\\s+above\\.?$/i);
+    if (noHosts) {
+      return \`\${noHosts[1]} 中尚无主机，请在上方输入添加。\`;
+    }
+
+    // 37. "An automation with the ID “<id>” already exists."
+    const dupIdMatch = normalizedText.match(/^An\\s+(automation|plugin|agent|sidecar)\\s+with\\s+the\\s+ID\\s+[“"](.+?)[”"]\\s+already\\s+exists\\.?$/i);
+    if (dupIdMatch) {
+      const noun = emptyNounMap[dupIdMatch[1].toLowerCase()] || dupIdMatch[1];
+      return \`已存在 ID 为“\${dupIdMatch[2]}”的\${noun}。\`;
+    }
+
+    // 38. Theme contrast warning: "Low contrast ratio (x:1). Text may be hard to read."
+    const lowContrastMatch = normalizedText.match(/^Low\\s+contrast\\s+ratio\\s+\\(([\\d.]+:1)\\)\\.\\s*Text\\s+may\\s+be\\s+hard\\s+to\\s+read\\.?$/i);
+    if (lowContrastMatch) {
+      return \`对比度较低（\${lowContrastMatch[1]}），文本可能难以辨认。\`;
+    }
+
     return null;
+  }
+
+  function isMultiTextElement(node) {
+    return node &&
+      node.nodeType === Node.ELEMENT_NODE &&
+      !isExcludedElement(node) &&
+      node.childNodes.length > 1 &&
+      Array.from(node.childNodes).every(c => c.nodeType === Node.TEXT_NODE);
+  }
+
+  function translateMultiTextElement(el) {
+    const children = Array.from(el.childNodes);
+    const origs = children.map(c => {
+      const cur = c.textContent;
+      if (lastWrittenMap.has(c) && lastWrittenMap.get(c) === cur) {
+        return origTextMap.has(c) ? origTextMap.get(c) : cur;
+      }
+      return cur;
+    });
+    const fullOrig = origs.join('');
+    const translated = translateText(fullOrig);
+    if (translated !== null) {
+      children.forEach((c, idx) => {
+        origTextMap.set(c, origs[idx]);
+        const target = idx === 0 ? translated : '';
+        lastWrittenMap.set(c, target);
+        if (c.textContent !== target) {
+          c.textContent = target;
+        }
+      });
+      return true;
+    }
+    // If previously translated by us and a dynamic update made it unmatched, restore originals.
+    if (children.some(c => lastWrittenMap.has(c))) {
+      children.forEach((c, idx) => {
+        const orig = origs[idx];
+        lastWrittenMap.delete(c);
+        origTextMap.delete(c);
+        if (c.textContent !== orig) {
+          c.textContent = orig;
+        }
+      });
+    }
+    return false;
   }
 
   function translateNode(node) {
     if (node.nodeType === Node.TEXT_NODE) {
       const current = node.textContent;
-      const translated = translateText(current);
+      // Do not turn prefix fragments like "No " (before sibling nodes in "No automations yet") into "否"
+      if (current.trim().toLowerCase() === 'no' && /\\s$/.test(current) && node.parentNode && node.parentNode.childNodes.length > 1) {
+        return;
+      }
+      let translated = translateText(current);
+      // Translate "+ New" button specifically on Automations without altering "New" feature badges
+      if (translated === null && current.replace(/\\s+/g, ' ').trim() === 'New' && node.parentElement && typeof node.parentElement.closest === 'function' && node.parentElement.closest('[data-testid="sidecar-new-button"]')) {
+        translated = '新建';
+      }
       if (translated !== null && current !== translated) {
         node.textContent = translated;
       }
@@ -817,16 +933,10 @@ function buildInjectScript(dict) {
           }
         }
       }
-      // Handle buttons where children are separate text nodes (e.g. "Delete " and "Project")
-      if (node.tagName === 'BUTTON' && node.childNodes.length > 1) {
-        const isAllText = Array.from(node.childNodes).every(c => c.nodeType === Node.TEXT_NODE);
-        if (isAllText) {
-          const fullText = node.textContent;
-          const translated = translateText(fullText);
-          if (translated !== null && fullText !== translated) {
-            node.textContent = translated;
-            return;
-          }
+      // Handle elements whose children are multiple adjacent text nodes (e.g. "No ", "automations", " yet")
+      if (isMultiTextElement(node)) {
+        if (translateMultiTextElement(node)) {
+          return;
         }
       }
       // Check children
@@ -847,7 +957,12 @@ function buildInjectScript(dict) {
           }
         } else if (mutation.type === 'characterData') {
           if (!isInExcludedZone(mutation.target)) {
-            translateNode(mutation.target);
+            const parent = mutation.target.parentElement;
+            if (isMultiTextElement(parent)) {
+              translateNode(parent);
+            } else {
+              translateNode(mutation.target);
+            }
           }
         }
       }

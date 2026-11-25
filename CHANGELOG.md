@@ -4,6 +4,39 @@
 
 ---
 
+## [v2.35.1] - 2026-11-25
+
+### 🐛 关键缺陷修复 (Critical Bug Fixes)
+- **彻底修复自动化空状态多节点拼接误译（`否automations yet`）**：
+  - **根本原因**：官方 JSX 将 `"No automations yet"` 等空状态拆分为多段相邻文本节点（`"No "`, `V0.emptyMessagePlural`, `" yet"`）渲染在 `<p>` / `<span>` 等非 `<button>` 容器内，旧版 `patch.js` 仅对 `<button>` 做了多文本节点聚合，导致前置片段 `"No "` 直接命中词典 `"No": "否"` 并丢失尾空格，拼成 **`否automations yet`**。
+  - **修复机制**：
+    1. [patch.js](file:///D:/AI/杂/antigravity-chinese-patch/patch.js) 将多文本节点聚合推广至所有安全非排除元素（`isMultiTextElement`），并通过 `origTextMap` / `lastWrittenMap` `WeakMap` 保留 React 原有文本节点结构、持续遵守所有写入路径的 `current !== translated` 防卡死校验，同时支持动态子文本节点刷新；
+    2. 对混合节点中的 `"No "` 碎片增加上下文保护（带尾空格且存在兄弟节点时不触发 `"No"` $\rightarrow$ `"否"` 替换）；
+    3. 对自动化右上角 `+ New` 按钮通过 `data-testid="sidecar-new-button"` 定向汉化为 `新建`，避免误伤 `New` 功能徽章；
+    4. 新增 `No <entity> yet`、`No <entity> match “<q>”.`、`No matching ...`、`No handlers configured for ...`、`No hosts in ... yet. Type one above.`、`An automation with the ID “...” already exists.` 及低对比度警告 `Low contrast ratio (x:1)...` 等 7 组动态正则规则。
+- **修复外观深色/浅色主题配色标签误译（`后台` / `前台` $\rightarrow$ `背景色` / `前景色`）**：
+  - 官方在全端仅“浅色主题 / 深色主题”配色器（Light Theme / Dark Theme）中使用了独立词条 `Background` 与 `Foreground`。已同步修正 [tools/entries_f_2230.json](file:///D:/AI/杂/antigravity-chinese-patch/tools/entries_f_2230.json) 与 [dictionary.json](file:///D:/AI/杂/antigravity-chinese-patch/dictionary.json)，将其更正为 `背景色` 与 `前景色`，与下方的 `强调色`（`Accent`）语义统一。
+
+### 🌟 新特性与全量设置句首大写格式迁移适配
+- **应用设置页 (App Settings)**：
+  - 适配句首大写文案迁移：`Prevent sleep` $\rightarrow$ `阻止系统休眠`、`Keep in menu bar` $\rightarrow$ `在菜单栏中保留`、`Notification settings` $\rightarrow$ `通知设置`、`Automatic check for updates` $\rightarrow$ `自动检查更新`；
+  - 补充远程控制设备名称与二维码扫码提示（`Device name` $\rightarrow$ `设备名称`、`Open in Remote Control` $\rightarrow$ `在远程控制中打开` 等）。
+- **通知设置页 (Notifications)**：
+  - 适配开关标签：`Enable notifications for agent` $\rightarrow$ `为智能体启用通知`、`Enable sounds for agent` $\rightarrow$ `为智能体启用声音`。
+- **外观与主题预设 (Appearance & Themes)**：
+  - 汉化对比度强对比选项（`Strong` $\rightarrow$ `高对比`）、聊天与产物宽度铺满选项（`Fill` $\rightarrow$ `铺满`）；
+  - 适配句首大写设置项：`Font size` $\rightarrow$ `字体大小`、`Conversation width` $\rightarrow$ `对话宽度`、`Screen reader mode` $\rightarrow$ `屏幕阅读器模式`、`Conversation steps` $\rightarrow$ `会话步骤`、`Custom context menus` $\rightarrow$ `自定义右键菜单`、`Terminal placement` $\rightarrow$ `终端放置位置`（含 `Bottom Panel` $\rightarrow$ `底部面板`、`Side Panel` $\rightarrow$ `侧边面板`）、`Markdown artifact width` $\rightarrow$ `Markdown 产物宽度`、`Context and quota indicator` $\rightarrow$ `上下文与配额指示器`；
+  - 汉化官方主题预设与代码预览（`Default Light` $\rightarrow$ `默认浅色`、`Default Dark` $\rightarrow$ `默认深色`、`Legacy Light` $\rightarrow$ `经典浅色`、`Legacy Dark` $\rightarrow$ `经典深色`、`Code Preview` $\rightarrow$ `代码预览`）。
+- **自动化任务、插件权限与新版交互 (Automations, Permissions & Sidebars)**：
+  - 汉化自动化空状态与运行引导（`No automations yet` $\rightarrow$ `暂无自动化任务`、`Run a prompt on a schedule...`、`Create automation`、`New automation`、`Execution Identity`、`Personal agent running as you`、`Shared agent for your team`、`All runs`、`Last run`、`Next run`、`Run Now`、`Schedule type`、`Repeat every`、`Start Automation` 及凭据过期/刷新提示）；
+  - 汉化通用/插件/浏览器设置句首大写迁移及新选项（`Auto` $\rightarrow$ `自动`、`Remote` $\rightarrow$ `远程`、`This computer` $\rightarrow$ `此电脑`、`Auto-Resolve` $\rightarrow$ `自动解决`、`Working Section` $\rightarrow$ `运行中分组`、`Plugin permissions` $\rightarrow$ `插件权限`、`Manage hooks` $\rightarrow$ `管理钩子`、`Model selection` $\rightarrow$ `模型选择`、`Browser actuation rules` $\rightarrow$ `浏览器操作规则`、`Browsing data` $\rightarrow$ `浏览数据`、`Browsing history` $\rightarrow$ `浏览历史记录`、`Delete all Remote Agents data` $\rightarrow$ `删除所有远程智能体数据`、`Clone from Remote` $\rightarrow$ `从远程克隆`、`Clone from This Computer` $\rightarrow$ `从此计算机克隆` 等）。
+
+### 🛡️ 稳固防御机制与词典扩充
+- **安全红线全部保持绿灯**：零恒等词条（`identity = 0`）、所有 DOM 写路径 `current !== translated` 前置拦截、专有名词（`GitHub`、`Google Chrome`、`Google Drive`、`Cookie`、`Gemini` 型号、`New` 徽章）全量受 `shouldNotTranslate` 测试守护；
+- **词典扩充**：新增 `tools/entries_o_2351.json`（新增 167 条词条），主词典总量提升至 **3,206 条**。
+
+---
+
 ## [v2.34.0] - 2026-11-24
 
 ### 🌟 新特性与通用设置/编排模型/右键快捷菜单深度适配

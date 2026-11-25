@@ -144,6 +144,54 @@ function translateText(text) {
     return `选择侧边栏项目 ${sidebarItemMatch[1]}`;
   }
 
+  // 32-38. 多文本节点空状态、缺失列表与主题对比度警告
+  const emptyNounMap = {
+    automation: '自动化任务', automations: '自动化任务',
+    plugin: '插件', plugins: '插件',
+    agent: '智能体', agents: '智能体',
+    coordinator: '协调员', coordinators: '协调员',
+    run: '运行记录', runs: '运行记录',
+    event: '事件', events: '事件',
+    host: '主机', hosts: '主机',
+    skill: '技能', skills: '技能',
+    rule: '规则', rules: '规则',
+    hook: '钩子', hooks: '钩子',
+    server: '服务器', servers: '服务器',
+    workspace: '工作空间', workspaces: '工作空间',
+    project: '项目', projects: '项目'
+  };
+  const noYetMatch = normalizedText.match(/^No\s+(automations?|plugins?|agents?|coordinators?|runs?|events?|hosts?|skills?|rules?|hooks?|servers?|workspaces?|projects?)\s+yet$/i);
+  if (noYetMatch) {
+    const noun = emptyNounMap[noYetMatch[1].toLowerCase()] || noYetMatch[1];
+    return `暂无${noun}`;
+  }
+  const noMatchQuery = normalizedText.match(/^No\s+(automations?|plugins?|agents?|coordinators?|runs?|events?|hosts?|skills?|rules?|hooks?|servers?|workspaces?|projects?)\s+match\s+[“"](.+?)[”"]\.?$/i);
+  if (noMatchQuery) {
+    const noun = emptyNounMap[noMatchQuery[1].toLowerCase()] || noMatchQuery[1];
+    return `没有匹配“${noMatchQuery[2]}”的${noun}。`;
+  }
+  const noMatching = normalizedText.match(/^No\s+matching\s+(.+)$/i);
+  if (noMatching) {
+    return `没有匹配的 ${noMatching[1]}`;
+  }
+  const noHandlers = normalizedText.match(/^No\s+handlers\s+configured\s+for\s+(.+?)\.?$/i);
+  if (noHandlers) {
+    return `尚未为 ${noHandlers[1]} 配置处理程序。`;
+  }
+  const noHosts = normalizedText.match(/^No\s+hosts\s+in\s+(.+?)\s+yet\.\s*Type\s+one\s+above\.?$/i);
+  if (noHosts) {
+    return `${noHosts[1]} 中尚无主机，请在上方输入添加。`;
+  }
+  const dupIdMatch = normalizedText.match(/^An\s+(automation|plugin|agent|sidecar)\s+with\s+the\s+ID\s+[“"](.+?)[”"]\s+already\s+exists\.?$/i);
+  if (dupIdMatch) {
+    const noun = emptyNounMap[dupIdMatch[1].toLowerCase()] || dupIdMatch[1];
+    return `已存在 ID 为“${dupIdMatch[2]}”的${noun}。`;
+  }
+  const lowContrastMatch = normalizedText.match(/^Low\s+contrast\s+ratio\s+\(([\d.]+:1)\)\.\s*Text\s+may\s+be\s+hard\s+to\s+read\.?$/i);
+  if (lowContrastMatch) {
+    return `对比度较低（${lowContrastMatch[1]}），文本可能难以辨认。`;
+  }
+
   return null;
 }
 
@@ -474,7 +522,56 @@ const cases = [
   'Security preset',
   'Enter to send',
   'Select Sidebar Item 3',
-  'Tell the agent what to do instead...'
+  'Tell the agent what to do instead...',
+  // ===== 2.35.1 新版特性、句子大小写回归与截图修复抽查 =====
+  'Prevent sleep',
+  'Keep in menu bar',
+  'Notification settings',
+  'Automatic check for updates',
+  'No automations yet',
+  "Run a prompt on a schedule, like a morning summary of yesterday's changes. Runs show up here.",
+  'Enable notifications for agent',
+  'Enable sounds for agent',
+  'Strong',
+  'Fill',
+  'Font size',
+  'Default Light',
+  'Default Dark',
+  'Background',
+  'Foreground',
+  'Conversation width',
+  'Screen reader mode',
+  'Conversation steps',
+  'Custom context menus',
+  'Terminal placement',
+  'Bottom Panel',
+  'Side Panel',
+  'Markdown artifact width',
+  'Context and quota indicator',
+  'Code Preview',
+  'New automation',
+  'Create automation',
+  'Execution Identity',
+  'Personal agent running as you',
+  'Shared agent for your team',
+  'Plugin permissions',
+  'Manage hooks',
+  'Model selection',
+  'Browser actuation rules',
+  'Delete all Remote Agents data',
+  'Clone from Remote',
+  'Clone from This Computer',
+  'Auto-Resolve',
+  'Working Section',
+  'Remote',
+  'Auto',
+  'No plugins yet',
+  'No automations match “daily”.',
+  'No matching environments',
+  'No handlers configured for GitHub.',
+  'No hosts in ~/.ssh/config yet. Type one above.',
+  'An automation with the ID “morning” already exists.',
+  'Low contrast ratio (2.1:1). Text may be hard to read.'
 ];
 
 let hit = 0, miss = 0;
@@ -485,21 +582,49 @@ for (const c of cases) {
 }
 console.log(`\n命中 ${hit} / ${cases.length}，未命中 ${miss}`);
 
+// 校验主题颜色标签修复（避免 "后台" / "前台" 误译）及零恒等词条约束
+const colorAssertions = [
+  ['Background', '背景色'],
+  ['Foreground', '前景色']
+];
+let assertFailures = 0;
+for (const [k, expected] of colorAssertions) {
+  const actual = translateText(k);
+  if (actual !== expected) {
+    assertFailures++;
+    console.log(`[断言失败] ${k} 期望 ${expected}，实际 ${actual}`);
+  }
+}
+const identityEntries = Object.entries(dictionary).filter(([k, v]) => k === v);
+if (identityEntries.length > 0) {
+  assertFailures++;
+  console.log(`[断言失败] 发现 ${identityEntries.length} 条恒等词条:`, identityEntries.map(([k]) => k));
+}
+
 // 确保不应被翻译的字符串不受影响
 // （品牌名 / 型号名刻意保留英文：恒等词条已在 v2.32.2 清理，配合写入防护彻底杜绝同值写死循环）
 const shouldNotTranslate = [
   'Antigravity',
   'Google Chrome',
   'Google Drive',
+  'GitHub',
   'Cookie',
   'Gemini Flash Next',
   'Gemini 2.5 Flash Image',
   'Gemini 3 Pro Image',
   'Gemini 3.1 Flash Image',
+  'New',
   '/browser',
   'main.js'
 ];
 for (const c of shouldNotTranslate) {
   const r = translateText(c);
-  if (r !== null) console.log(`[警告] 不应翻译却被翻译: ${c} -> ${r}`);
+  if (r !== null) {
+    assertFailures++;
+    console.log(`[警告] 不应翻译却被翻译: ${c} -> ${r}`);
+  }
+}
+
+if (miss > 0 || assertFailures > 0) {
+  process.exitCode = 1;
 }
