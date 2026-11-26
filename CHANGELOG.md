@@ -4,6 +4,16 @@
 
 ---
 
+## [v2.35.2] - 2026-11-26
+
+### ✅ 版本兼容性验证与版本号同步
+- **全量兼容验证通过**：
+  - 针对官方新安装的 `v2.35.2`（`app.asar.bak`）运行 [check_main_process.js](file:///D:/AI/杂/antigravity-chinese-patch/tools/check_main_process.js)，主进程 **32 / 32** 组匹配模式全部命中（未命中 `0`）；
+  - 通过 [fetch_ui_strings.js](file:///D:/AI/杂/antigravity-chinese-patch/tools/fetch_ui_strings.js) 提取 `v2.35.2` 前端最新 `main.js`（12.2 MB），核对设置项、多文本节点聚合区域与主题配色组件均与 `v2.35.1` 一致，无新增缺失设置项与未覆盖前缀规则；
+  - 同步更新 [package.json](file:///D:/AI/杂/antigravity-chinese-patch/package.json)、[README.md](file:///D:/AI/杂/antigravity-chinese-patch/README.md)、[CHANGELOG.md](file:///D:/AI/杂/antigravity-chinese-patch/CHANGELOG.md) 及 GitHub 仓库简介（About）至 **v2.35.2**。
+
+---
+
 ## [v2.35.1] - 2026-11-25
 
 ### 🐛 关键缺陷修复 (Critical Bug Fixes)

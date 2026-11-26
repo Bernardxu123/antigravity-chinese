@@ -1,13 +1,13 @@
 # Google Antigravity 桌面端中文汉化补丁 (2.x 全版本)
 
-[![Version](https://img.shields.io/badge/Antigravity-v2.35.1-blue.svg)](https://github.com/Bernardxu123/antigravity-chinese)
+[![Version](https://img.shields.io/badge/Antigravity-v2.35.2-blue.svg)](https://github.com/Bernardxu123/antigravity-chinese)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](https://github.com/Bernardxu123/antigravity-chinese)
 [![Dictionary](https://img.shields.io/badge/dictionary-3200%2B%20entries-orange.svg)](dictionary.json)
 
 本项目为 Google 官方出品的下一代 AI 编程智能体工具 **Google Antigravity 桌面端** 提供高品质、无损、深度集成的界面中文汉化补丁。
 
-持续跟进官方发布动态，当前已深度适配 **v2.35.1（2026年11月最新版）**，同时向下兼容 2.x 全系版本。
+持续跟进官方发布动态，当前已深度适配 **v2.35.2（2026年11月最新版）**，同时向下兼容 2.x 全系版本。
 
 ---
 
@@ -26,7 +26,8 @@
 
 | Antigravity 版本 | 汉化支持状态 | 词典词条数 | 重点更新内容 |
 | :--- | :---: | :---: | :--- |
-| **v2.35.1**（最新） | 🌟 完美支持 | **3,206** | 修复多文本节点拼接空状态误译（`No automations yet` 不再误译为 `否automations yet`）；修复外观深色/浅色主题颜色标签误译（`Background`/`Foreground` $\rightarrow$ `背景色`/`前景色`）；全面适配 v2.35.x 句首大写格式迁移（`Prevent sleep`、`Keep in menu bar`、`Notification settings`、`Automatic check for updates`、`Enable notifications/sounds for agent`、`Font size`、`Conversation width`、`Screen reader mode` 等）；汉化对比度 `Strong`、宽度 `Fill`、主题预设、自动化执行身份与凭据续期、插件权限与钩子管理等 |
+| **v2.35.2**（最新） | 🌟 完美支持 | **3,206** | 全量兼容验证通过：经 `fetch_ui_strings.js` 与 `check_main_process.js` 实测，v2.35.2 主进程 32 组匹配模式全部命中（32 / 32），前端设置项与多文本节点渲染逻辑完全兼容 v2.35.1 补丁，无新增未汉化设置词条 |
+| **v2.35.1** | ✅ 完美支持 | 3,206 | 修复多文本节点拼接空状态误译（`No automations yet` 不再误译为 `否automations yet`）；修复外观深色/浅色主题颜色标签误译（`Background`/`Foreground` $\rightarrow$ `背景色`/`前景色`）；全面适配 v2.35.x 句首大写格式迁移（`Prevent sleep`、`Keep in menu bar`、`Notification settings`、`Automatic check for updates`、`Enable notifications/sounds for agent`、`Font size`、`Conversation width`、`Screen reader mode` 等）；汉化对比度 `Strong`、宽度 `Fill`、主题预设、自动化执行身份与凭据续期、插件权限与钩子管理等 |
 | **v2.34.0** | ✅ 完美支持 | 3,039 | 全新双模型架构编排模式（Orchestrator & Executor Models）；项目/工作空间右键菜单“复制项目名称”（Copy Project Name）；通用设置中输入框分区（Input Box）、排队消息策略（Queued messages）、回车快捷键发送设置；权限预设与工具/网络/文件权限详情（Tool permissions / Network access rules）；侧边栏自定义管理（Customize Sidebar）；沙箱与终端命令控制等 |
 | **v2.33.0** | ✅ 完美支持 | 2,977 | 侧边栏多维筛选/排序（项目排序、工作空间排序、自动置顶、仅已归档、定时任务、副标题与修饰标签）；会话右键菜单置顶/取消置顶（Pin/Unpin）；标签页置顶/取消置顶（Pin Tab/Unpin Tab）；顶部快速搜索与 URL 打开引导（Search or enter a URL）；浏览器数据清理与 Cookie 管理；快捷键方案配置等 |
 | **v2.32.2** | ✅ 完美支持 | 2,920 | 修复“自定义配置”界面死循环假死问题；欢迎页带用户名动态问候语与专业技能建议卡片；语音音量说明；工具权限详情；Swarm 危险操作区警告与删除按钮多文本节点合并汉化等 |
